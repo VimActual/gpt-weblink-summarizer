@@ -15,12 +15,11 @@ class GetSub():
         self.remove_non_speach()
 
     def getsub(self):
-        #thread = Thread(target=yt_dlp.main, args=(["--write-auto-sub", "--convert-subs=vtt", "--skip-download", self.video_url, "-o", self.videoname],))
         thread = Thread(target=yt_dlp.main, args=(["--write-auto-sub", "--sub-langs=en.*", "--skip-download", self.video_url, "-o", self.videoname],))
         thread.start()
         thread.join()
-        if os.path.exists(self.videoname + '.en-en.vtt'):
-            self.file_name = self.videoname + '.en-en.vtt'
+        if os.path.exists(self.videoname + '.en-orig.vtt'):
+            self.file_name = self.videoname + '.en-orig.vtt'
         else:
             self.file_name = self.videoname + '.en.vtt'
 
