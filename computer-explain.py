@@ -45,7 +45,7 @@ class GetSub():
                     line_cleaned = line.rstrip()
                     line_cleaned = line.replace('\n', ' ')
                     file.write(line_cleaned)
-                    self.text = text + line_clearned
+                    self.text = self.text + line_cleaned
         return self.text
 
 class AskGPT3():
