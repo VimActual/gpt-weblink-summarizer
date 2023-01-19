@@ -2,16 +2,22 @@
 from threading import Thread
 import requests
 import os
-import yt_dlp
 import re
+import yt_dlp
+import openapi
 
 def main():
     openapi_key = ''
+    openai.api_key = openapi_key #os.getenv("OPENAI_API_KEY")
     vid1 = GetSub()
     text1 = vid1.get_text()
-    gpt3 = AskGPT3(openapi_key)
+    #gpt3 = AskGPT3(openapi_key)
     quesitons = 'Give me a brief summary of this video'
-    summation = gpt3.ask(quesitons, text1)
+    #summation = gpt3.ask(quesitons, text1)
+    # list engines
+    engines = openai.Engine.list()
+    # print the first engine's id
+    print(engines.data[0].id)
 
 class GetSub():
     def __init__(self):
