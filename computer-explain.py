@@ -7,10 +7,11 @@ import re
 
 def main():
     openapi_key = ''
-    text = GetSub()
+    vid1 = GetSub()
+    text1 = vid1.get_text()
     gpt3 = AskGPT3(openapi_key)
     quesitons = 'Give me a brief summary of this video'
-    summation = gpt3.ask(quesitons, text)
+    summation = gpt3.ask(quesitons, text1)
 
 class GetSub():
     def __init__(self):
@@ -18,6 +19,8 @@ class GetSub():
         self.videoname = input("Enter name for video: ")
         self.get_raw_sub()
         self.remove_non_speach()
+        
+    def get_text(self):
         return self.text
 
     def get_raw_sub(self):
