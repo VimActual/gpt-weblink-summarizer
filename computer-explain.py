@@ -5,17 +5,24 @@ import os
 import yt_dlp
 import re
 
+def main():
+    openapi_key = ''
+    text = GetSub()
+    gpt3 = AskGPT3(openapi_key)
+    quesitons = 'Give me a brief summary of this video'
+    summation = gpt3.ask(quesitons, text)
+
 class GetSub():
     def __init__(self):
         self.video_url = input("Enter video-url: ")
         self.videoname = input("Enter name for video: ")
-
-    def sub_only(self):
-        self.getsub()
+        self.get_raw_sub()
         self.remove_non_speach()
+        return self.text
 
-    def getsub(self):
-        thread = Thread(target=yt_dlp.main, args=(["--write-auto-sub", "--sub-langs=en.*", "--skip-download", self.video_url, "-o", self.videoname],))
+    def get_raw_sub(self):
+        #thread = Thread(target=yt_dlp.main, args=(["--write-auto-sub", "--sub-langs=en.*", "--skip-download", self.video_url, "-o", self.videoname],))
+        thread = Thread(target=yt_dlp.main, args=(["--write-auto-sub", "--skip-download", self.video_url, "-o", self.videoname],))
         thread.start()
         thread.join()
         if os.path.exists(self.videoname + '.en-orig.vtt'):
@@ -25,6 +32,7 @@ class GetSub():
 
     def remove_non_speach(self):
         pattern = re.compile(r'^.*(\d{2}:\d{2}:\d{2}\.\d{3}).*$')
+        self.text = ''
         with open(self.file_name, 'r') as file:
             print(f'opening file for reading {self.file_name}')
             lines = file.readlines()
@@ -37,21 +45,24 @@ class GetSub():
                     line_cleaned = line.rstrip()
                     line_cleaned = line.replace('\n', ' ')
                     file.write(line_cleaned)
+                    self.text = text + line_clearned
+        return self.text
 
-class AskGPT():
-    def __init__(self):
-        return 0
-    def ask(self, question, data):
+class AskGPT3():
+    def __init__(self, openapi_key):
+        self.openapi_key = openapi_key
+
+    def ask(self, question, text):
+        question = question + '\n' + text
         r = requests.post('https://api.genesistranslation.com/v1/gtp3',
-                json={"user_key": "<your key>",
+                json={"user_key": self.openapi_key,
                     "query": question
                     })
-
         data = r.json()
         print(data['result'])
+
 if __name__ == '__main__':
-    g = GetSub()
-    g.sub_only()
+    main()
 
 #financial
 """
