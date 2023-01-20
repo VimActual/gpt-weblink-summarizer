@@ -4,20 +4,23 @@ import requests
 import os
 import re
 import yt_dlp
-import openapi
+from chatgpt import Conversation
 
 def main():
-    openapi_key = ''
-    openapi.api_key = openapi_key #os.getenv("OPENAI_API_KEY")
     vid1 = GetSub()
     text1 = vid1.get_text()
-    #gpt3 = AskGPT3(openapi_key)
-    quesitons = 'Give me a brief summary of this video'
-    #summation = gpt3.ask(quesitons, text1)
+    question_dict = {}
+    question_dict['brief_summary'] = 'Give me a brief summary of this video\n'
+    #question_dict['answer_to_title'] = f'the title of this video is "{video_title}" what was that discovery?\n'
+    chatgpt = AskChatGPT()
+    query = question_dict['brief_summary'] + text1
+    summation = chatgpt.ask(query)
+    print(summation)
+    #summation = vid1.ask(quesitons, text1)
     # list engines
-    engines = openapi.Engine.list()
+    #engines = openapi.Engine.list()
     # print the first engine's id
-    print(engines.data[0].id)
+    #print(engines.data[0].id)
 
 class GetSub():
     def __init__(self):
@@ -56,6 +59,12 @@ class GetSub():
                     file.write(line_cleaned)
                     self.text = self.text + line_cleaned
         return self.text
+
+class AskChatGPT():
+    def ask(self, query):
+        converstation = Conversation(config_path='')
+        for chunk in converstation.stream(query):
+            print(chunk, end="")
 
 class AskGPT3():
     def __init__(self, openapi_key):
