@@ -14,8 +14,8 @@ def main():
     #question_dict['answer_to_title'] = f'the title of this video is "{video_title}" what was that discovery?\n'
     chatgpt = AskChatGPT()
     query = question_dict['brief_summary'] + text1
-    summation = chatgpt.ask(query)
-    print(summation)
+    #summation = chatgpt.ask(query)
+    #print(summation)
     #summation = vid1.ask(quesitons, text1)
     # list engines
     #engines = openapi.Engine.list()
