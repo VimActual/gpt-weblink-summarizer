@@ -10,7 +10,7 @@ from threading import Thread
 import os
 
 # Set OpenAI API key
-openai.api_key = "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"
+openai.api_key = ""
 
 class GetSub():
     def __init__(self, video_url, videoname):
@@ -76,7 +76,7 @@ def ask_openai(question, text):
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=1024,
+        max_tokens=4096,
         n=1,
         stop=None,
         temperature=0.7,
